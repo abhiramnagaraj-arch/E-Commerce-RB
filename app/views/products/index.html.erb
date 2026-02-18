@@ -1,0 +1,21 @@
+<h1>Products</h1>
+
+<% @products.each do |product| %>
+  <div style="margin-bottom:20px;">
+    <h3><%= link_to product.name, product_path(product) %></h3>
+    <p><%= product.description %></p>
+    <p>Price: $<%= product.price %></p>
+   <% if product.stock > 0 %>
+  <p style="color:green;">In Stock: <%= product.stock %></p>
+<% else %>
+  <p style="color:red;">Out of Stock</p>
+<% end %>
+
+
+    <% if product.stock > 0 %>
+      <%= button_to "Add to Cart", add_to_cart_path(product.id), method: :post %>
+    <% else %>
+      <button disabled style="background-color: gray;">Out of Stock</button>
+    <% end %>
+  </div>
+<% end %>
