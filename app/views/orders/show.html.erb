@@ -1,0 +1,16 @@
+<h1>Order <%= @order.id %></h1>
+
+<% @order.order_items.each do |item| %>
+  <p>
+  <strong><%= item.product.name %></strong><br>
+  Quantity: <%= item.quantity %><br>
+  Price: ₹<%= item.price %>
+</p>
+
+<% end %>
+
+<h3>Total: ₹<%= @order.total_amount %></h3>
+
+<p>Ordered on: <%= @order.created_at.strftime("%d %B %Y") %></p>
+<%= link_to "Back to Orders", orders_path %>
+

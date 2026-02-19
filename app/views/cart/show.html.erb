@@ -19,7 +19,8 @@
         <td>$<%= product.price %></td>
         <td><%= quantity %></td>
         <td>$<%= product.price * quantity %></td>
-        <td>
+
+        <td style="display:flex; gap:5px;">
           <%= button_to "+",
                         add_to_cart_path(product),
                         method: :post,
@@ -43,14 +44,17 @@
 
   <h3>Total Items: <%= @total_items %></h3>
   <h2>Total Bill: $<%= @total_price %></h2>
+<br>
+
+<%= button_to "Place Order",
+              checkout_path,
+              method: :post,
+              data: { turbo: false } %>
 
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>
 
 <br>
+
 <%= link_to "Back to Products", products_path %>
-<%= button_to "Checkout",
-              checkout_path,
-              method: :post,
-              data: { turbo: false } %>

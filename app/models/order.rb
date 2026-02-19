@@ -1,3 +1,6 @@
 class Order < ApplicationRecord
-  #belongs_to :user
+  # app/models/order.rb
+belongs_to :user
+has_many :order_items, dependent: :destroy
+
 end
