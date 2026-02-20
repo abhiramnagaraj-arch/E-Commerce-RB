@@ -1,16 +1,26 @@
-<h1>Order <%= @order.id %></h1>
+<h1>Order Details</h1>
 
-<% @order.order_items.each do |item| %>
-  <p>
-  <strong><%= item.product.name %></strong><br>
-  Quantity: <%= item.quantity %><br>
-  Price: ₹<%= item.price %>
+<p>
+  <strong>Order:</strong> <%= @order.id %><br>
+  <strong>Date:</strong> <%= @order.created_at.strftime("%d %b %Y %H:%M") %><br>
+  <strong>Status:</strong> <%= @order.status.capitalize %><br>
+  <strong>Total:</strong> <%= number_with_precision(@order.total_amount, precision: 2) %>
 </p>
 
-<% end %>
+<h3>Items</h3>
 
-<h3>Total: ₹<%= @order.total_amount %></h3>
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Price</th>
+  </tr>
 
-<p>Ordered on: <%= @order.created_at.strftime("%d %B %Y") %></p>
-<%= link_to "Back to Orders", orders_path %>
-
+  <% @order.order_items.each do |item| %>
+    <tr>
+      <td><%= item.product.name %></td>
+      <td><%= item.quantity %></td>
+      <td><%= number_with_precision(item.price, precision: 2) %></td>
+    </tr>
+  <% end %>
+</table>

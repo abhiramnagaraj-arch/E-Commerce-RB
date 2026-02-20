@@ -1,0 +1,21 @@
+<%= render "admin/navbar" %>
+
+<h1>Admin Users</h1>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr>
+    <th>ID</th>
+    <th>Email</th>
+    <th>Admin?</th>
+    <th>Total Orders</th>
+  </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= user.email %></td>
+      <td><%= user.admin? ? "Yes" : "No" %></td>
+      <td><%= user.orders.count %></td>
+    </tr>
+  <% end %>
+</table>

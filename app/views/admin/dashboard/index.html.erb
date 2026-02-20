@@ -1,0 +1,27 @@
+<h1>Admin Dashboard</h1>
+<h2>Admin Navigation</h2>
+<%= render "admin/navbar" %>
+
+<ul>
+  <li><%= link_to "Dashboard", admin_root_path %></li>
+  <li><%= link_to "Manage Orders", admin_orders_path %></li>
+  <li><%= link_to "Manage Products", admin_products_path %></li>
+  <li><%= link_to "Manage Users", admin_users_path %></li>
+</ul>
+
+<hr>
+
+
+<p><strong>Total Orders:</strong> <%= @total_orders %></p>
+<p><strong>Total Revenue (Delivered):</strong> ₹<%= @total_revenue %></p>
+
+<hr>
+
+<h2>Status Breakdown</h2>
+
+<ul>
+  <li>Placed: <%= @placed_orders %></li>
+  <li>Confirmed: <%= @confirmed_orders %></li>
+  <li>Shipped: <%= @shipped_orders %></li>
+  <li>Delivered: <%= @delivered_orders %></li>
+</ul>

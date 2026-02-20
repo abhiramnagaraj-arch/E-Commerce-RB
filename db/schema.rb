@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_19_114159) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_20_111852) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_114159) do
 
   create_table "orders", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "status"
+    t.integer "status", default: 0, null: false
     t.decimal "total"
     t.decimal "total_amount"
     t.datetime "updated_at", null: false
@@ -70,12 +70,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_114159) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.string "email"
     t.string "name"
     t.string "password_digest"
-    t.string "role"
+    t.integer "role", default: 0, null: false
     t.datetime "updated_at", null: false
   end
 

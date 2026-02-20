@@ -1,9 +1,17 @@
-<h1>My Orders</h1>
+<h1>My Order History</h1>
 
-<% @orders.each do |order| %>
-  <p>
-    Order #<%= order.id %> |
-    Total: <%= order.total_amount %> |
-    <%= link_to "View", order_path(order) %>
-  </p>
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <hr>
+
+    <p>
+      <strong>Order: </strong> <%= link_to order.id, order_path(order) %><br>
+      <strong>Placed On:</strong> <%= order.created_at.strftime("%d %b %Y %H:%M") %><br>
+      <strong>Total:</strong> <%= number_with_precision(order.total_amount, precision: 2) %><br>
+      <strong>Status:</strong> <%= order.status.capitalize %>
+    </p>
+
+  <% end %>
+<% else %>
+  <p>You have not placed any orders yet.</p>
 <% end %>

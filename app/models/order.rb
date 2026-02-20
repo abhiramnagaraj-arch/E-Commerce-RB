@@ -1,6 +1,11 @@
 class Order < ApplicationRecord
-  # app/models/order.rb
-belongs_to :user
-has_many :order_items, dependent: :destroy
+  belongs_to :user
+  has_many :order_items, dependent: :destroy
 
+ enum :status, {
+  placed: 0,
+  confirmed: 1,
+  shipped: 2,
+  delivered: 3
+}
 end
