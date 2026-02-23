@@ -6,6 +6,7 @@ class Order < ApplicationRecord
   placed: 0,
   confirmed: 1,
   shipped: 2,
-  delivered: 3
+  delivered: 3,
+  cancelled: 4
 }
 end

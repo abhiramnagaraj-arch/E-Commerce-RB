@@ -1,60 +1,60 @@
-<h1>Your Cart</h1>
+  <h1>Your Cart</h1>
 
-<% if @products.any? %>
+  <% if @products.any? %>
 
-  <table border="1" cellpadding="10">
-    <tr>
-      <th>Product</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Subtotal</th>
-      <th>Actions</th>
-    </tr>
-
-    <% @products.each do |product| %>
-      <% quantity = @cart_items[product.id.to_s] %>
-
+    <table border="1" cellpadding="10">
       <tr>
-        <td><%= product.name %></td>
-        <td>$<%= product.price %></td>
-        <td><%= quantity %></td>
-        <td>$<%= product.price * quantity %></td>
-
-        <td style="display:flex; gap:5px;">
-          <%= button_to "+",
-                        add_to_cart_path(product),
-                        method: :post,
-                        data: { turbo: false } %>
-
-          <%= button_to "-",
-                        decrease_cart_path(product),
-                        method: :post,
-                        data: { turbo: false } %>
-
-          <%= button_to "Remove",
-                        remove_from_cart_path(product),
-                        method: :delete,
-                        data: { turbo: false } %>
-        </td>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </table>
+
+      <% @products.each do |product| %>
+        <% quantity = @cart_items[product.id.to_s] %>
+
+        <tr>
+          <td><%= product.name %></td>
+          <td>$<%= product.price %></td>
+          <td><%= quantity %></td>
+          <td>$<%= product.price * quantity %></td>
+
+          <td style="display:flex; gap:5px;">
+            <%= button_to "+",
+                          add_to_cart_path(product),
+                          method: :post,
+                          data: { turbo: false } %>
+
+            <%= button_to "-",
+                          decrease_cart_path(product),
+                          method: :post,
+                          data: { turbo: false } %>
+
+            <%= button_to "Remove",
+                          remove_from_cart_path(product),
+                          method: :delete,
+                          data: { turbo: false } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+    <br>
+
+    <h3>Total Items: <%= @total_items %></h3>
+    <h2>Total Bill: $<%= @total_price %></h2>
+  <br>
+
+  <%= button_to "Place Order",
+              orders_path,
+              method: :post,
+              data: { turbo: false } %>
+              
+  <% else %>
+    <p>Your cart is empty.</p>
+  <% end %>
 
   <br>
 
-  <h3>Total Items: <%= @total_items %></h3>
-  <h2>Total Bill: $<%= @total_price %></h2>
-<br>
-
-<%= button_to "Place Order",
-              checkout_path,
-              method: :post,
-              data: { turbo: false } %>
-
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
-
-<br>
-
-<%= link_to "Back to Products", products_path %>
+  <%= link_to "Back to Products", products_path %>

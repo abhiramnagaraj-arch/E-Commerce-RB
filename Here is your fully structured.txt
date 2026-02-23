@@ -1,0 +1,459 @@
+Here is your **fully structured master prompt** in the exact format you requested.
+
+---
+
+# ROLE
+
+You are a senior full-stack architect and principal engineer building a production-grade, scalable, secure multi-vendor e-commerce platform using:
+
+* **Backend:** Ruby on Rails (API-first architecture)
+* **Frontend:** Angular (latest stable version)
+* **Database:** PostgreSQL
+* **Authentication:** Session-based authentication (Rails)
+* **CI/CD:** GitHub Actions
+* **Deployment target:** Cloud-ready (Heroku / Render / AWS ready)
+* **Architecture style:** RESTful API + Angular SPA
+* **Code quality:** Production-ready, scalable, clean architecture, service objects, concerns, validations, policy-based authorization
+
+You must build the entire system end-to-end with proper models, controllers, services, validations, authorization, routes, Angular components, services, guards, interceptors, state handling, UI flows, and database schema.
+
+---
+
+# CONTEXT
+
+We are building **Shopflow**, a multi-vendor e-commerce marketplace platform.
+
+It supports:
+
+* Customers (Users)
+* Sellers (Vendors)
+* Admins
+
+The system already has:
+
+* Cart functionality
+* Stock validation (cannot exceed stock)
+* Checkout logic that reduces stock
+* Order history page
+* Admin route protection
+* Session-based authentication
+* User-Task association experience from previous project (Taskflow)
+* GitHub CI setup (currently failing, needs fixing)
+
+Now we want to build the **complete scalable production version** including:
+
+* Seller onboarding
+* Product management
+* Admin dashboard
+* Order management
+* Payments integration
+* Role-based authorization
+* Secure session management
+* Full Angular frontend
+* Proper CI/CD
+* Clean architecture
+
+---
+
+# DATA
+
+Below is the complete detailed specification.
+
+---
+
+# 1. TECH STACK
+
+## Backend (Ruby on Rails API Mode)
+
+* Rails 7+
+* PostgreSQL
+* Puma
+* ActiveRecord
+* Session-based authentication
+* Bcrypt (password hashing)
+* Pundit or CanCanCan for authorization
+* Service Objects for business logic
+* Concerns for shared logic
+* RESTful API
+* JSON responses
+* RSpec for testing
+* FactoryBot
+* GitHub Actions for CI
+
+## Frontend (Angular)
+
+* Angular (latest stable)
+* Angular Router
+* Reactive Forms
+* Angular Guards
+* HTTP Interceptors
+* RxJS
+* Angular Material or Tailwind
+* Token/session handling
+* Role-based route protection
+* Modular architecture
+
+---
+
+# 2. USER ROLES & PERMISSIONS
+
+## 1️⃣ Customer (User)
+
+### Capabilities
+
+* Register
+* Login / Logout
+* Maintain session
+* Browse products
+* Search products
+* Filter by:
+
+  * Category
+  * Price
+  * Seller
+* Add to cart
+* Update cart quantities
+* Remove from cart
+* Checkout
+* View order history
+* View order details
+* Cancel order (if not shipped)
+* Update profile
+* Save shipping address
+* Add payment method
+* Leave product reviews
+* Rate products
+
+### Restrictions
+
+* Cannot access admin routes
+* Cannot modify stock
+* Cannot view other users' orders
+
+---
+
+## 2️⃣ Seller (Vendor)
+
+### Capabilities
+
+* Register as seller (approval required)
+* Login
+* Create products
+* Edit products
+* Delete products
+* Manage stock
+* Upload product images
+* View orders containing their products
+* Update order status:
+
+  * Pending
+  * Confirmed
+  * Shipped
+  * Delivered
+* View sales analytics
+* Manage pricing
+* Apply discounts
+
+### Restrictions
+
+* Cannot access admin dashboard
+* Cannot modify other sellers’ products
+* Cannot access full platform analytics
+
+---
+
+## 3️⃣ Admin
+
+### Capabilities
+
+* Full dashboard
+* Approve / Reject sellers
+* Manage users
+* Suspend users
+* Suspend sellers
+* Delete products
+* Monitor orders
+* Issue refunds
+* Platform analytics
+* Category management
+* View total revenue
+* Manage site configuration
+* View logs
+
+### Restrictions
+
+* Cannot place orders (unless admin has user role too)
+
+---
+
+# 3. DATABASE STRUCTURE
+
+## Core Models
+
+### User
+
+* id
+* name
+* email
+* password_digest
+* role (enum: customer, seller, admin)
+* approved (boolean for sellers)
+* suspended (boolean)
+* timestamps
+
+### Product
+
+* id
+* name
+* description
+* price
+* stock_quantity
+* seller_id (foreign key)
+* category_id
+* active (boolean)
+* timestamps
+
+### Category
+
+* id
+* name
+* description
+
+### Cart
+
+* id
+* user_id
+
+### CartItem
+
+* id
+* cart_id
+* product_id
+* quantity
+
+### Order
+
+* id
+* user_id
+* total_amount
+* status (pending, confirmed, shipped, delivered, cancelled)
+* payment_status
+* shipping_address
+* timestamps
+
+### OrderItem
+
+* id
+* order_id
+* product_id
+* seller_id
+* quantity
+* price_at_purchase
+
+### Payment
+
+* id
+* order_id
+* amount
+* payment_method
+* transaction_id
+* status
+* timestamps
+
+### Review
+
+* id
+* user_id
+* product_id
+* rating
+* comment
+* timestamps
+
+---
+
+# 4. AUTHENTICATION FLOW
+
+* Session-based authentication
+* Secure cookies
+* Password encrypted with bcrypt
+* current_user helper
+* before_action authentication filter
+* Angular guard checks session
+* HTTP interceptor handles 401
+* CSRF protection enabled
+
+---
+
+# 5. CART LOGIC
+
+* Add product to cart
+* Validate stock before adding
+* Update quantity
+* Remove item
+* Prevent quantity exceeding stock
+* Cart persists in DB
+* Clear cart after checkout
+
+---
+
+# 6. CHECKOUT FLOW
+
+1. Validate cart
+2. Validate stock
+3. Create Order
+4. Create OrderItems
+5. Deduct stock
+6. Process payment
+7. Mark payment_status
+8. Clear cart
+9. Send confirmation email
+
+All wrapped in database transaction.
+
+---
+
+# 7. PAYMENT SYSTEM
+
+* Integration-ready (Stripe recommended)
+* Payment statuses:
+
+  * pending
+  * successful
+  * failed
+  * refunded
+* Webhook handling
+* Secure API keys
+* Refund support
+* Seller payout tracking (future enhancement)
+
+---
+
+# 8. ORDER MANAGEMENT
+
+## Customer
+
+* View history
+* Track order
+* Cancel (if eligible)
+
+## Seller
+
+* View orders containing their products
+* Update fulfillment status
+
+## Admin
+
+* Full visibility
+* Force cancel
+* Refund
+
+---
+
+# 9. ADMIN DASHBOARD
+
+* Total users
+* Total sellers
+* Total revenue
+* Orders overview
+* Top selling products
+* Seller approval queue
+* Category management
+
+---
+
+# 10. ANGULAR FRONTEND STRUCTURE
+
+## Modules
+
+* AuthModule
+* ProductModule
+* CartModule
+* OrderModule
+* AdminModule
+* SellerModule
+* SharedModule
+
+## Features
+
+* Role-based routing
+* Lazy loading
+* Guards
+* Interceptors
+* Services for API calls
+* Reactive forms
+* Proper error handling
+* Loading states
+* Responsive UI
+
+---
+
+# 11. SECURITY
+
+* Strong params
+* Model validations
+* Role-based authorization
+* CSRF protection
+* SQL injection protection (ActiveRecord)
+* XSS prevention
+* Rate limiting
+* Secure headers
+* CORS configured properly
+
+---
+
+# 12. CI/CD
+
+* GitHub Actions pipeline:
+
+  * Run RSpec
+  * Run Angular tests
+  * Lint checks
+  * Build verification
+* Auto deploy to staging
+* Environment-based secrets
+
+---
+
+# 13. FUTURE ENHANCEMENTS
+
+* Seller payouts
+* Coupons
+* Wishlist
+* Notifications
+* Real-time order tracking
+* ElasticSearch
+* Redis caching
+* Background jobs (Sidekiq)
+
+---
+
+# FINAL OBJECTIVE
+
+Build a complete, scalable, secure, production-ready multi-vendor marketplace named **Shopflow** using:
+
+* Ruby on Rails (API backend)
+* Angular (Frontend SPA)
+* PostgreSQL
+* Session-based authentication
+* Stripe payments
+* Full role-based system
+* Clean architecture
+* CI/CD ready
+
+It must support Customers, Sellers, and Admins with fully detailed workflows and production-grade structure.
+
+---
+
+If you want, I can now generate:
+
+* 🔥 A database schema diagram
+* 🔥 Full Rails folder architecture
+* 🔥 Full Angular folder architecture
+* 🔥 Complete API endpoint list
+* 🔥 ER diagram
+* 🔥 Deployment architecture
+* 🔥 GitHub CI workflow config
+* 🔥 Full development roadmap
+
+Tell me what you want next.
+

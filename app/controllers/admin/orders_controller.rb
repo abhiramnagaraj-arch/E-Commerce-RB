@@ -5,17 +5,23 @@ class Admin::OrdersController < ApplicationController
     @orders = Order.includes(:user).order(created_at: :desc)
   end
 
-  def update
+  def show
     @order = Order.find(params[:id])
-
-    if Order.statuses.keys.include?(params[:status])
-      @order.update(status: params[:status])
-      redirect_to admin_orders_path, notice: "Order updated successfully"
-    else
-      redirect_to admin_orders_path, alert: "Invalid status"
-    end
   end
 
+  def update
+  @order = Order.find(params[:id])
+  new_status = params[:status]
+
+  if Order.statuses.keys.include?(new_status) &&
+     Order.statuses[new_status] >= Order.statuses[@order.status]
+
+    @order.update(status: new_status)
+    redirect_to admin_orders_path, notice: "Order updated successfully"
+  else
+    redirect_to admin_orders_path, alert: "Invalid status transition"
+  end
+end
 
   private
 

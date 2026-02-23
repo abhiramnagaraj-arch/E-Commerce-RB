@@ -1,5 +1,4 @@
 class CartController < ApplicationController
-  before_action :require_login, only: [:checkout]
 
   # ADD PRODUCT
   def add
@@ -61,46 +60,4 @@ class CartController < ApplicationController
     redirect_back fallback_location: cart_path
   end
 
-  # CHECKOUT
-  def checkout
-    session[:cart] ||= {}
-
-    if session[:cart].empty?
-      redirect_to cart_path, alert: "Cart is empty"
-      return
-    end
-
-    products = Product.where(id: session[:cart].keys)
-
-    total = products.sum do |product|
-      product.price * session[:cart][product.id.to_s]
-    end
-
-    order = current_user.orders.create!(
-      status: :placed,
-      total_amount: total
-    )
-
-    products.each do |product|
-      quantity = session[:cart][product.id.to_s]
-
-      order.order_items.create!(
-        product: product,
-        quantity: quantity,
-        price: product.price
-      )
-
-      product.decrement!(:stock, quantity)
-    end
-
-    session[:cart] = {}
-
-    redirect_to orders_path, notice: "Order placed successfully!"
-  end
-
-  private
-
-  def require_login
-    redirect_to login_path, alert: "You must be logged in to checkout." unless current_user
-  end
 end

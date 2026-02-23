@@ -25,20 +25,11 @@
         </strong>
       </td>
 
-      <td>
-        <% case order.status %>
-        <% when "placed" %>
-          <span style="color: orange;"><%= order.status.capitalize %></span>
-        <% when "confirmed" %>
-          <span style="color: blue;"><%= order.status.capitalize %></span>
-        <% when "shipped" %>
-          <span style="color: purple;"><%= order.status.capitalize %></span>
-        <% when "delivered" %>
-          <span style="color: green; font-weight: bold;"><%= order.status.capitalize %></span>
-        <% else %>
-          <%= order.status.capitalize %>
-        <% end %>
-      </td>
+     <td>
+  <span class="admin-status <%= order.status %>">
+    <%= order.status.capitalize %>
+  </span>
+</td>
 
       <td>
         <%= form_with url: admin_order_path(order), method: :patch, local: true do %>
